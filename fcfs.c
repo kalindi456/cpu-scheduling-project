@@ -1,5 +1,8 @@
-#include "../include/scheduler.h"
-
+#include <stdio.h>
+#include "scheduler.h"
+#include  "gantt.h"
+#include "csv.h"
+#include "io.h"
 void fcfs(struct process p[], int n)
 {
     float time = 0;

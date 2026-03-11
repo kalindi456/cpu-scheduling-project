@@ -1,4 +1,8 @@
-#include "../include/scheduler.h"
+#include <stdio.h>
+#include "scheduler.h"
+#include "gantt.h"
+#include "csv.h"
+#include "io.h"
 
 void priority_np(struct process p[], int n)
 {
