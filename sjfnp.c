@@ -1,0 +1,39 @@
+#include<stdio.h>
+#include "scheduler.h"
+void sjfnp(struct Process p[],int n){
+	int completed=0;float current_time=0;
+	float total_wt=0,total_tat=0;
+	printf("\nSJF Non-Preepmtive Scheduler\n");
+	
+	while(completed<n){
+		int idx=-1;
+		float min_bt=9999;
+		for(int i=0;i<n;i++){
+		if(p[i].at<=current_time && p[i].finished==0 && p[i].bt<min_bt){
+		min_bt=p[i].bt;
+		idx=i;
+	}
+	}
+		if(idx==-1)current_time++;
+		else{
+		printf(" P%d |",p[idx].pid);
+		p[idx].ct=current_time+p[idx].bt;
+		p[idx].tat=p[idx].ct-p[idx].at;
+		p[idx].wt=p[idx].tat-p[idx].bt;
+		total_wt+=p[idx].wt;
+		total_tat+=p[idx].tat;
+		current_time=p[idx].ct;
+		p[idx].finished=1;
+		completed++;
+}
+
+
+
+}
+
+	printf("\nAverage Waiting Time=%.2f",total_wt/n);
+	printf("\nAverage Turnaround Time=%.2f",total_tat/n);
+
+
+
+}
