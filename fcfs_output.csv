@@ -1,7 +1,0 @@
-PID,Arrival Time,Burst Time,Completion Time,Turnaround Time,Waiting Time
-1,0.000000,2.000000,2.000000,2.000000,0.000000
-3,1.000000,5.000000,7.000000,6.000000,1.000000
-2,3.000000,4.000000,11.000000,8.000000,4.000000
-
-Average Turnaround Time,5.333333
-Average Waiting Time,1.666667
