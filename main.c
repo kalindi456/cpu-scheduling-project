@@ -30,14 +30,12 @@ for(int i=0;i<n;i++){
 
 
 
-
 	printf("Shortest Job First\n");
 	sjfnp(p,n);
 	print_process_table(p,n);
 	reset_results(p,n);
 	printf("\n");
 <<<<<<< HEAD
-	printf("\nPriority Preemptive\n");
 =======
 	
 	printf("Shortest Job First Preemptive SRTF\n");
@@ -60,6 +58,8 @@ for(int i=0;i<n;i++){
 	i++;}
 }	/*Priority based*/
 >>>>>>> 60b96bd (Changed format)
+	printf("\nPriority Preemptive\n");
+
 	priority_p(p,n);
 	print_process_table(p,n);
 	reset_results(p,n);
