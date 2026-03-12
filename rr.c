@@ -3,7 +3,7 @@
 #include "gantt.h"
 #include "csv.h"
 
-void rr(Process p[], int n, int tq)
+void rr(struct Process p[], int n, int tq)
 {
     int time = 0;
     int completed = 0;

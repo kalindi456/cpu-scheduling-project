@@ -2,8 +2,8 @@
 #include "scheduler.h"
 #include  "gantt.h"
 #include "csv.h"
-#include "io.h"
-void fcfs(struct process p[], int n)
+
+void fcfs(struct Process p[], int n)
 {
     float time = 0;
     float total_tat = 0;

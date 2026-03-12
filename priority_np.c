@@ -2,9 +2,9 @@
 #include "scheduler.h"
 #include "gantt.h"
 #include "csv.h"
-#include "io.h"
 
-void priority_np(struct process p[], int n)
+
+void priority_np(struct Process p[], int n)
 {
     int completed = 0;
     float time = 0;

@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "csv.h"
 
+
+
 void save_performance(char algo[], float avg_wt, float avg_tat)
 {
     FILE *fp;
@@ -9,7 +11,7 @@ void save_performance(char algo[], float avg_wt, float avg_tat)
 
     if(fp == NULL)
     {
-        printf("Error opening performance file\n");
+        printf("Error opening performance.csv\n");
         return;
     }
 
