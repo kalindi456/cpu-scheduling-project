@@ -1,5 +1,7 @@
 #include<stdio.h>
 #include "scheduler.h"
+#include "gantt.h"
+#include "csv.h"
 void sjfnp(struct Process p[],int n){
 	int completed=0;float current_time=0;
 	float total_wt=0,total_tat=0;

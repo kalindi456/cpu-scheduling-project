@@ -1,7 +1,7 @@
 #ifndef SHEDULER_H
 #define SCHEDULER_H
 
-struct Process{
+  struct Process{
 	int pid;
 	float at;
 	float bt;
@@ -12,7 +12,7 @@ struct Process{
 	int priority;
 	int finished;
 
-};
+} ;
 void srtf(struct Process p[],int n);
 void sjfnp(struct Process p[],int n);
 void priority_p(struct Process p[],int n);

@@ -1,5 +1,8 @@
 #include<stdio.h>
 #include "scheduler.h"
+#include "gantt.h"
+#include "csv.h"
+
 
 void srtf(struct Process p[],int n){
 	int completed=0;float current_time=0;
@@ -30,11 +33,16 @@ void srtf(struct Process p[],int n){
 	p[idx].wt=p[idx].tat-p[idx].bt;
 	total_tat+=p[idx].tat;
 	total_wt+=p[idx].wt;
+// Gantt chart logging
+log_gantt_slice(p[i].pid, start, end);
 	p[idx].finished=1;
 	completed++;
 	
 	printf("\nAverage Waiting Time=%.2f",total_wt/n);
         printf("\nAverage Turnaround Time=%.2f",total_tat/n);
+
+// Save performance to CSV
+save_performance("SRTF", avg_wt, avg_tat);
 }
 }
 

@@ -35,9 +35,6 @@ for(int i=0;i<n;i++){
 	print_process_table(p,n);
 	reset_results(p,n);
 	printf("\n");
-<<<<<<< HEAD
-=======
-	
 	printf("Shortest Job First Preemptive SRTF\n");
         srtf(p,n);
         print_process_table(p,n);
@@ -57,14 +54,13 @@ for(int i=0;i<n;i++){
 	hm[pr]=1;
 	i++;}
 }	/*Priority based*/
->>>>>>> 60b96bd (Changed format)
+
 	printf("\nPriority Preemptive\n");
 
 	priority_p(p,n);
 	print_process_table(p,n);
 	reset_results(p,n);
 
-<<<<<<< HEAD
 	printf("\n Priority Non Preemptive \n");
     	priority_np(p,n);
     	print_process_table(p,n);
@@ -79,7 +75,7 @@ for(int i=0;i<n;i++){
 	rr(p,n,tq);
     	print_process_table(p,n);
     	reset_results(p,n);
-=======
+
 /*	printf("\nPriority Non- Preemptive\n");
 	priority_np(p,n);
 	print_process_table(p,n);
@@ -92,7 +88,7 @@ for(int i=0;i<n;i++){
         rr(p,n,tq);
         print_process_table(p,n);
         reset_results(p,n); */    
->>>>>>> 60b96bd (Changed format)
+
 return 0;
 
 

@@ -39,6 +39,8 @@ void priority_np(struct Process p[], int n)
         p[idx].ct = time;
         p[idx].tat = p[idx].ct - p[idx].at;
         p[idx].wt = p[idx].tat - p[idx].bt;
+// Gantt chart logging
+log_gantt_slice(p[idx].pid, start, end);
 
         total_tat += p[idx].tat;
         total_wt += p[idx].wt;
@@ -49,4 +51,7 @@ void priority_np(struct Process p[], int n)
 
     float avg_tat = total_tat / n;
     float avg_wt = total_wt / n;
+
+// Save performance to CSV
+save_performance("Priority_np", avg_wt, avg_tat);
 }
