@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #include "scheduler.h"
 int main(){
-	int n,choice; float tq;
+	int n; float tq;
 printf("Enter Number of processes: ");
 scanf("%d",&n);
 struct Process p[n];

@@ -16,7 +16,7 @@ void fcfs( struct Process p[], int n)
         {
             if(p[i].at > p[j].at)
             {
-                Process temp = p[i];
+              struct  Process temp = p[i];
                 p[i] = p[j];
                 p[j] = temp;
             }

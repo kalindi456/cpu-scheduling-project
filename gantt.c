@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "gantt.h"
 
-void log_gantt_slice(int pid, int start, int end)
+void log_gantt_slice(int pid, float  start, float end)
 {
     FILE *fp;
 
@@ -17,7 +17,7 @@ void log_gantt_slice(int pid, int start, int end)
     }
 
     /* Write gantt slice */
-    fprintf(fp, "%d,%d,%d\n", pid, start, end);
+    fprintf(fp, "%d,%f,%f\n", pid, start, end);
 
     fclose(fp);
 }
