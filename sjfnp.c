@@ -3,7 +3,6 @@
 void sjfnp(struct Process p[],int n){
 	int completed=0;float current_time=0;
 	float total_wt=0,total_tat=0;
-	printf("\nSJF Non-Preepmtive Scheduler\n");
 	
 	while(completed<n){
 		int idx=-1;
@@ -16,7 +15,6 @@ void sjfnp(struct Process p[],int n){
 	}
 		if(idx==-1)current_time++;
 		else{
-		printf(" P%d |",p[idx].pid);
 		p[idx].ct=current_time+p[idx].bt;
 		p[idx].tat=p[idx].ct-p[idx].at;
 		p[idx].wt=p[idx].tat-p[idx].bt;

@@ -22,7 +22,8 @@ void srtf(struct Process p[],int n){
 	current_time++;
 }
 	else{remaining_bt[idx]--;
-	current_time++;
+	current_time++;}
+
 	if(remaining_bt[idx]==0){
 	p[idx].ct=current_time;
 	p[idx].tat=p[idx].ct-p[idx].at;
@@ -31,26 +32,14 @@ void srtf(struct Process p[],int n){
 	total_wt+=p[idx].wt;
 	p[idx].finished=1;
 	completed++;
-}
-
-
-}
-}
-	printf("\nPID\tAT\tBT\tCT\tTAT\tWT\n");
-        for(int i=0;i<n;i++){
-        printf("P%d\t%.2f\t%.2f\t%.2f\t%.2f\t%.2f\n",
-
-                p[i].pid,
-                p[i].at,p[i].bt,p[i].ct,p[i].tat,p[i].wt);
-}
-
-        printf("\nAverage Waiting Time=%.2f",total_wt/n);
+	
+	printf("\nAverage Waiting Time=%.2f",total_wt/n);
         printf("\nAverage Turnaround Time=%.2f",total_tat/n);
-
-
-
-
-
+}
+}
 
 }
+
+
+
 

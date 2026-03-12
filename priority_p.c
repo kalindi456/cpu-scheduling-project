@@ -58,7 +58,6 @@ void priority_p(struct Process p[], int n)
             time++;
         }
     }
-
     /* ---------------- OUTPUT / CSV ---------------- */
  
 }
