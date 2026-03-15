@@ -1,99 +1,209 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include "scheduler.h"
+
+void print_border(){
+    printf("\n====================================================\n");
+}
+
+void print_menu(){
+    print_border();
+    printf("              CPU SCHEDULING SIMULATOR\n");
+    print_border();
+    printf("1. First Come First Serve (FCFS)\n");
+    printf("2. Shortest Job First (SJF - Non Preemptive)\n");
+    printf("3. Shortest Remaining Time First (SRTF)\n");
+    printf("4. Priority Scheduling (Preemptive)\n");
+    printf("5. Priority Scheduling (Non Preemptive)\n");
+    printf("6. Round Robin\n");
+    printf("7. Run All Algorithms\n");
+    printf("0. Exit\n");
+    print_border();
+    printf("Enter your choice: ");
+}
+
+void generate_chart(){
+    printf("\nGenerating Gantt Chart...\n");
+    system("python3 visualization/gantt_chart.py data/schedule_log.csv");
+}
+
 int main(){
-	int n; float tq;
-printf("Enter Number of processes: ");
-scanf("%d",&n);
-struct Process p[n];
-FILE *fp = fopen("data/schedule_log.csv","w");
-fprintf(fp,"pid,start,end\n");
-fclose(fp);
 
-for(int i=0;i<n;i++){
-	p[i].pid=i+1;
-	printf("\nProcess P%d\n",i+1);
+    int n,choice;
+    float tq;
 
-	printf("Arrival Time: ");
-	scanf("%f",&p[i].at);
-	printf("Burst Time: ");
+    print_border();
+    printf("Enter Number of Processes: ");
+    scanf("%d",&n);
+
+    struct Process p[n];
+
+    FILE *fp = fopen("data/schedule_log.csv","w");
+    fprintf(fp,"pid,start,end\n");
+    fclose(fp);
+
+    for(int i=0;i<n;i++){
+        p[i].pid=i+1;
+
+        print_border();
+        printf("Process P%d\n",i+1);
+
+        printf("Arrival Time: ");
+        scanf("%f",&p[i].at);
+
+        printf("Burst Time: ");
         scanf("%f",&p[i].bt);
-	p[i].finished=0;
 
-      	
+        p[i].finished=0;
+    }
 
-}	/*printf("First Come first Serve FCFS\n");
-        fcfs(p,n);
-        print_process_table(p,n);
-        reset_results(p,n);
-        printf("\n");*/
+    int hm[1000]={0};
 
+    for(int i=0;i<n;i++){
+        int pr;
+        printf("Enter Priority for PID P%d: ",i+1);
+        scanf("%d",&pr);
 
+        while(hm[pr]==1){
+            printf("Priority already used! Enter again: ");
+            scanf("%d",&pr);
+        }
 
-	printf("Shortest Job First\n");
-	sjfnp(p,n);
-	print_process_table(p,n);
-	reset_results(p,n);
-	printf("\n");
-	printf("Shortest Job First Preemptive SRTF\n");
-        srtf(p,n);
-        print_process_table(p,n);
-        reset_results(p,n);
-        printf("\n");
+        p[i].priority=pr;
+        hm[pr]=1;
+    }
 
-	printf("\nPriority Preemptive\n");
-	int hm[1000];
-	int pr;
-	int i=0;
-	while(i<n){
-	printf("Enter Priority of PID:%d ",i+1);
-	scanf("%d",&pr);
-	if(hm[pr]==1){printf("Priority already assigned.Try again!");}
-	
-	else{p[i].priority=pr;
-	hm[pr]=1;
-	i++;}
-}	/*Priority based*/
+    while(1){
 
-	printf("\nPriority Preemptive\n");
+        print_menu();
+        scanf("%d",&choice);
 
-	priority_p(p,n);
-	print_process_table(p,n);
-	reset_results(p,n);
+        if(choice==0){
+            printf("\nExiting Scheduler...\n");
+            break;
+        }
 
-	printf("\n Priority Non Preemptive \n");
-    	priority_np(p,n);
-    	print_process_table(p,n);
-    	reset_results(p,n);
-    	printf("\n FCFS \n");
-    	fcfs(p,n);
-    	print_process_table(p,n);
-        reset_results(p,n);
-    	printf("\n Round Robin\n");
-    	printf("Enter Time Quantum: ");
-    	scanf("%f",&tq);
-	rr(p,n,tq);
-    	print_process_table(p,n);
-    	reset_results(p,n);
+        switch(choice){
 
-/*	printf("\nPriority Non- Preemptive\n");
-	priority_np(p,n);
-	print_process_table(p,n);
-	reset_results(p,n);		
-	
-	printf("\nRound Robin\n");
-	float tq;
-	printf("Enter time quantum TQ: ");
-	scanf("%f",&tq);
-        rr(p,n,tq);
-        print_process_table(p,n);
-        reset_results(p,n); */    
+            case 1:
+                print_border();
+                printf("Running FCFS Scheduling\n");
+                print_border();
 
-return 0;
+                fcfs(p,n);
+                print_process_table(p,n);
+                generate_chart();
+                reset_results(p,n);
+                break;
 
+            case 2:
+                print_border();
+                printf("Running Shortest Job First (SJF)\n");
+                print_border();
 
+                sjfnp(p,n);
+                print_process_table(p,n);
+                generate_chart();
+                reset_results(p,n);
+                break;
 
+            case 3:
+                print_border();
+                printf("Running Shortest Remaining Time First (SRTF)\n");
+                print_border();
 
+                srtf(p,n);
+                print_process_table(p,n);
+                generate_chart();
+                reset_results(p,n);
+                break;
 
+            case 4:
+                print_border();
+                printf("Running Priority Scheduling (Preemptive)\n");
+                print_border();
 
+                priority_p(p,n);
+                print_process_table_priority(p,n);
+                generate_chart();
+                reset_results(p,n);
+                break;
+
+            case 5:
+                print_border();
+                printf("Running Priority Scheduling (Non Preemptive)\n");
+                print_border();
+
+                priority_np(p,n);
+                print_process_table_priority(p,n);
+                generate_chart();
+                reset_results(p,n);
+                break;
+
+            case 6:
+                print_border();
+                printf("Round Robin Scheduling\n");
+                print_border();
+
+                printf("Enter Time Quantum: ");
+                scanf("%f",&tq);
+
+                rr(p,n,tq);
+                print_process_table(p,n);
+                generate_chart();
+                reset_results(p,n);
+                break;
+
+            case 7:
+                print_border();
+                printf("Running ALL Scheduling Algorithms\n");
+                print_border();
+
+                printf("\n--- SJF ---\n");
+                sjfnp(p,n);
+                print_process_table(p,n);
+                generate_chart();
+                reset_results(p,n);
+
+                printf("\n--- SRTF ---\n");
+                srtf(p,n);
+                print_process_table(p,n);
+                generate_chart();
+                reset_results(p,n);
+
+                printf("\n--- Priority Preemptive ---\n");
+                priority_p(p,n);
+                print_process_table_priority(p,n);
+                generate_chart();
+                reset_results(p,n);
+
+                printf("\n--- Priority Non Preemptive ---\n");
+                priority_np(p,n);
+                print_process_table_priority(p,n);
+                generate_chart();
+                reset_results(p,n);
+
+                printf("\n--- FCFS ---\n");
+                fcfs(p,n);
+                print_process_table(p,n);
+                generate_chart();
+                reset_results(p,n);
+
+                printf("\n--- Round Robin ---\n");
+                printf("Enter Time Quantum: ");
+                scanf("%f",&tq);
+
+                rr(p,n,tq);
+                print_process_table(p,n);
+                generate_chart();
+                reset_results(p,n);
+
+                break;
+
+            default:
+                printf("\nInvalid Choice! Try again.\n");
+        }
+    }
+
+    return 0;
 }

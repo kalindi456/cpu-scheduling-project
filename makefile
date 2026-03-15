@@ -13,6 +13,8 @@ SRC = main.c \
       priority_np.c \
       priority_p.c \
       csv.c \
+      reset_results.c \
+      print_table.c \
       gantt.c
 
 # Output executable
