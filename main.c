@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include "scheduler.h"
-
+#include "gantt.h"
 void print_border(){
     printf("\n====================================================\n");
 }
@@ -54,14 +54,14 @@ int main(){
         printf("Arrival Time: ");
         scanf("%f",&p[i].at);
 	while(negative_error(p[i].at)==-1){
-	printf("Time cannot be negative!Try Again!");
+	printf("Time cannot be negative!Try Again!\n");
 	printf("Arrival Time: ");
         scanf("%f",&p[i].at);
 }
         printf("Burst Time: ");
         scanf("%f",&p[i].bt);
 	while(negative_error(p[i].bt)==-1){
-        printf("Time cannot be negative!Try Again!");
+        printf("Time cannot be negative!Try Again!\n");
         printf("Burst Time: ");
         scanf("%f",&p[i].bt);
 }
@@ -101,7 +101,7 @@ int main(){
                 print_border();
                 printf("Running FCFS Scheduling\n");
                 print_border();
-
+		reset_gantt_log();
                 fcfs(p,n);
                 print_process_table(p,n);
                 generate_chart();
@@ -112,6 +112,7 @@ int main(){
                 print_border();
                 printf("Running Shortest Job First (SJF)\n");
                 print_border();
+		reset_gantt_log();
 
                 sjfnp(p,n);
                 print_process_table(p,n);
@@ -123,7 +124,7 @@ int main(){
                 print_border();
                 printf("Running Shortest Remaining Time First (SRTF)\n");
                 print_border();
-
+		reset_gantt_log();
                 srtf(p,n);
                 print_process_table(p,n);
                 generate_chart();
@@ -151,6 +152,7 @@ int main(){
                 print_border();
                 printf("Running Priority Scheduling (Preemptive)\n");
                 print_border();
+		reset_gantt_log();
 
                 priority_p(p,n);
                 print_process_table_priority(p,n);
@@ -179,6 +181,7 @@ int main(){
 		 print_border();
                 printf("Running Priority Scheduling (Non Preemptive)\n");
                 print_border();
+		reset_gantt_log();
 
                 priority_np(p,n);
                 print_process_table_priority(p,n);
@@ -193,6 +196,7 @@ int main(){
 
                 printf("Enter Time Quantum: ");
                 scanf("%f",&tq);
+		reset_gantt_log();
 
                 rr(p,n,tq);
                 print_process_table(p,n);
@@ -206,18 +210,24 @@ int main(){
                 print_border();
 
                 printf("\n--- SJF ---\n");
+		reset_gantt_log();
+
                 sjfnp(p,n);
                 print_process_table(p,n);
                 generate_chart();
                 reset_results(p,n);
 
                 printf("\n--- SRTF ---\n");
+		reset_gantt_log();
+
                 srtf(p,n);
                 print_process_table(p,n);
                 generate_chart();
                 reset_results(p,n);
 
                 printf("\n--- Priority Preemptive ---\n");
+		reset_gantt_log();
+
                 priority_p(p,n);
                 print_process_table_priority(p,n);
                 generate_chart();

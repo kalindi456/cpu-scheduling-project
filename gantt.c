@@ -21,3 +21,7 @@ void log_gantt_slice(int pid, float  start, float end)
 
     fclose(fp);
 }
+void reset_gantt_log(){FILE *fp=fopen("data/schedule_log.csv","w");
+		if(fp!=NULL){
+		fprintf(fp,"pid,start,end\n");
+fclose(fp);}}
