@@ -6,6 +6,7 @@ void print_border(){
     printf("\n====================================================\n");
 }
 
+
 void print_menu(){
     print_border();
     printf("              CPU SCHEDULING SIMULATOR\n");
@@ -26,7 +27,9 @@ void generate_chart(){
     printf("\nGenerating Gantt Chart...\n");
     system("python3 visualization/gantt_chart.py data/schedule_log.csv");
 }
-
+int negative_error(int time){
+	if(time<0)
+{return -1;} else{return 0;}}
 int main(){
 
     int n,choice;
@@ -50,14 +53,23 @@ int main(){
 
         printf("Arrival Time: ");
         scanf("%f",&p[i].at);
-
+	while(negative_error(p[i].at)==-1){
+	printf("Time cannot be negative!Try Again!");
+	printf("Arrival Time: ");
+        scanf("%f",&p[i].at);
+}
         printf("Burst Time: ");
         scanf("%f",&p[i].bt);
+	while(negative_error(p[i].bt)==-1){
+        printf("Time cannot be negative!Try Again!");
+        printf("Burst Time: ");
+        scanf("%f",&p[i].bt);
+}
 
         p[i].finished=0;
     }
 
-    int hm[1000]={0};
+   /* int hm[1000]={0};
 
     for(int i=0;i<n;i++){
         int pr;
@@ -71,7 +83,7 @@ int main(){
 
         p[i].priority=pr;
         hm[pr]=1;
-    }
+    }*/
 
     while(1){
 
@@ -119,6 +131,23 @@ int main(){
                 break;
 
             case 4:
+		int hm[1000]={0};
+
+    for(int i=0;i<n;i++){
+        int pr;
+        printf("Enter Priority for PID P%d: ",i+1);
+        scanf("%d",&pr);
+
+        while(hm[pr]==1){
+            printf("Priority already used! Enter again: ");
+            scanf("%d",&pr);
+        }
+
+        p[i].priority=pr;
+        hm[pr]=1;
+    }
+
+
                 print_border();
                 printf("Running Priority Scheduling (Preemptive)\n");
                 print_border();
@@ -130,7 +159,24 @@ int main(){
                 break;
 
             case 5:
-                print_border();
+               int hm2[1000]={0};
+
+    for(int i=0;i<n;i++){
+        int pr;
+        printf("Enter Priority for PID P%d: ",i+1);
+        scanf("%d",&pr);
+
+        while(hm2[pr]==1){
+            printf("Priority already used! Enter again: ");
+            scanf("%d",&pr);
+        }
+
+        p[i].priority=pr;
+        hm2[pr]=1;
+    }
+
+
+		 print_border();
                 printf("Running Priority Scheduling (Non Preemptive)\n");
                 print_border();
 
