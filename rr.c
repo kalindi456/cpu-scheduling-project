@@ -17,13 +17,13 @@ void rr(struct Process p[], int n, int tq)
 
     while(completed < n)
     {
-        int done = 1;
+        int executed = 0;
 
         for(int i = 0; i < n; i++)
         {
-            if(rem_bt[i] > 0)
+            if(rem_bt[i] > 0 && p[i].at <= time)
             {
-                done = 0;
+                executed = 1;
 
                 int start = time;
 
@@ -37,6 +37,7 @@ void rr(struct Process p[], int n, int tq)
                 else
                 {
                     time += rem_bt[i];
+
                     log_gantt_slice(p[i].pid, start, time);
 
                     p[i].ct = time;
@@ -46,8 +47,11 @@ void rr(struct Process p[], int n, int tq)
             }
         }
 
-        if(done == 1)
-            break;
+        // CPU idle case
+        if(!executed)
+        {
+            time++;
+        }
     }
 
     for(int i = 0; i < n; i++)
@@ -61,6 +65,9 @@ void rr(struct Process p[], int n, int tq)
 
     float avg_wt = total_wt / n;
     float avg_tat = total_tat / n;
+
+    printf("\nAverage Waiting Time = %.2f", avg_wt);
+    printf("\nAverage Turnaround Time = %.2f", avg_tat);
 
     save_performance("RR", avg_wt, avg_tat);
 }
