@@ -234,12 +234,16 @@ int main(){
                 reset_results(p,n);
 
                 printf("\n--- Priority Non Preemptive ---\n");
+		reset_gantt_log();
+
                 priority_np(p,n);
                 print_process_table_priority(p,n);
                 generate_chart();
                 reset_results(p,n);
 
                 printf("\n--- FCFS ---\n");
+		reset_gantt_log();
+
                 fcfs(p,n);
                 print_process_table(p,n);
                 generate_chart();
@@ -248,6 +252,7 @@ int main(){
                 printf("\n--- Round Robin ---\n");
                 printf("Enter Time Quantum: ");
                 scanf("%f",&tq);
+		reset_gantt_log();
 
                 rr(p,n,tq);
                 print_process_table(p,n);
