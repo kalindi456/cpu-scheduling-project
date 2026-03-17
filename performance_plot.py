@@ -3,14 +3,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Read performance CSV
-df = pd.read_csv("performance.csv")
+df = pd.read_csv("data/performance.csv")
 
 # Algorithms
-algorithms = df['Algorithm'].tolist()
+algorithms = df['algorithm'].tolist()
 
 # Avg WT and Avg TAT
-avg_wt = df['AvgWT'].tolist()
-avg_tat = df['AvgTAT'].tolist()
+avg_wt = df['avg_wt'].tolist()
+avg_tat = df['avg_tat'].tolist()
 
 # Set up positions for bars
 x = np.arange(len(algorithms))

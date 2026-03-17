@@ -2,6 +2,8 @@
 #include<stdlib.h>
 #include "scheduler.h"
 #include "gantt.h"
+#include "csv.h"
+#define MAX_PROCESS 100
 void print_border(){
     printf("\n====================================================\n");
 }
@@ -30,15 +32,31 @@ void generate_chart(){
 int negative_error(int time){
 	if(time<0)
 {return -1;} else{return 0;}}
+int invalid_bt(int time){
+if (time<=0)
+{return -1;} else{return 0;}}
+
 int main(){
 
     int n,choice;
     float tq;
-
+    char extra;
+int result;
     print_border();
-    printf("Enter Number of Processes: ");
-    scanf("%d",&n);
+do
+{
+    printf("Enter number of processes (1-%d): ", MAX_PROCESS);
+ 	result=   scanf("%d%c",&n,&extra);
 
+    if(n <= 0 || n > MAX_PROCESS)
+        printf("Invalid number of processes.\n");
+    if(result!=2|| extra!= '\n'){
+	printf("Invalid number of processes.Only Integer allowed.\n");
+	while(getchar()!='\n');
+	n=-1;
+        continue;
+}
+} while(n <= 0 || n > MAX_PROCESS);
     struct Process p[n];
 
     FILE *fp = fopen("data/schedule_log.csv","w");
@@ -60,30 +78,14 @@ int main(){
 }
         printf("Burst Time: ");
         scanf("%f",&p[i].bt);
-	while(negative_error(p[i].bt)==-1){
-        printf("Time cannot be negative!Try Again!\n");
+	while(invalid_bt(p[i].bt)==-1){
+        printf("Time cannot be negative or zero !Try Again!\n");
         printf("Burst Time: ");
         scanf("%f",&p[i].bt);
 }
 
         p[i].finished=0;
     }
-
-   /* int hm[1000]={0};
-
-    for(int i=0;i<n;i++){
-        int pr;
-        printf("Enter Priority for PID P%d: ",i+1);
-        scanf("%d",&pr);
-
-        while(hm[pr]==1){
-            printf("Priority already used! Enter again: ");
-            scanf("%d",&pr);
-        }
-
-        p[i].priority=pr;
-        hm[pr]=1;
-    }*/
 
     while(1){
 
@@ -193,9 +195,14 @@ int main(){
                 print_border();
                 printf("Round Robin Scheduling\n");
                 print_border();
+		do{
+    		printf("Enter Time Quantum (1 - 10): ");
+    		scanf("%f",&tq);
 
-                printf("Enter Time Quantum: ");
-                scanf("%f",&tq);
+    		if(tq < 1 || tq > 10)
+       		 printf("Invalid Time Quantum! Enter value between 1 and 10.\n");
+
+		} while(tq < 1 || tq > 10);
 		reset_gantt_log();
 
                 rr(p,n,tq);
@@ -208,7 +215,8 @@ int main(){
                 print_border();
                 printf("Running ALL Scheduling Algorithms\n");
                 print_border();
-
+		//to reset the  performance log
+		reset_performance_log();
                 printf("\n--- SJF ---\n");
 		reset_gantt_log();
 
@@ -258,7 +266,8 @@ int main(){
                 print_process_table(p,n);
                 generate_chart();
                 reset_results(p,n);
-
+		 // Generate comparison graph automatically
+    		system("python3 performance_plot.py");
                 break;
 
             default:

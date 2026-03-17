@@ -3,11 +3,11 @@
 #include "gantt.h"
 #include "csv.h"
 
-void rr(struct Process p[], int n, int tq)
+void rr(struct Process p[], int n, float  tq)
 {
-int time = 0;
+float time = 0;
 int completed = 0;
-int rem_bt[50];
+float rem_bt[50];
 float total_wt = 0, total_tat = 0;
 
 
@@ -34,7 +34,7 @@ while(completed < n)
                 idle_start = -1;
             }
 
-            int start = time;
+            float start = time;
 
             if(rem_bt[i] > tq)
             {
