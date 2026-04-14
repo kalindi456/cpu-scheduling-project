@@ -1,6 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-
+import sys
+algorithm=sys.argv[1]
+csv_file=sys.argv[2]
 df = pd.read_csv("data/schedule_log.csv")
 df = df.sort_values(by="start")
 
@@ -32,7 +34,7 @@ for _, row in df.iterrows():
 
 ax.set_yticks([])
 ax.set_xlabel("Time")
-ax.set_title("CPU Scheduling Gantt Chart")
+ax.set_title(algorithm)
 
 times = sorted(set(df["start"]).union(set(df["end"])))
 ax.set_xticks(times)

@@ -25,10 +25,41 @@ void print_menu(){
     printf("Enter your choice: ");
 }
 
-void generate_chart(){
+void generate_chart(char *algorithm){
+	char command[200];
     printf("\nGenerating Gantt Chart...\n");
-    system("python3 visualization/gantt_chart.py data/schedule_log.csv");
+    snprintf(command,sizeof(command),"python3 visualization/gantt_chart.py \"%s\" data/schedule_log.csv",algorithm);
+	system(command);
 }
+int get_valid_priority(int hm[], int pid) {
+int pr;
+
+while (1) {
+printf("Enter Priority for PID P%d: ", pid);
+
+if (scanf("%d", &pr) == 1) {
+
+// 🔥 CLEAR BUFFER HERE (important)
+while (getchar() != '\n');
+
+if (pr > 0 && pr < 1000) {
+
+if (hm[pr] == 0) {
+return pr;
+} else {
+printf("Priority already used! Try again.\n");
+}
+
+} else {
+printf("Priority must be between 1–999.\n");
+}
+
+} else {
+printf("Invalid input! Enter a natural number (1–999).\n");
+
+// clear invalid input
+while (getchar() != '\n');
+}}}
 int negative_error(int time){
 	if(time<0)
 {return -1;} else{return 0;}}
@@ -37,7 +68,6 @@ if (time<=0)
 {return -1;} else{return 0;}}
 
 int main(){
-
     int n,choice;
     float tq;
     char extra;
@@ -106,7 +136,7 @@ do
 		reset_gantt_log();
                 fcfs(p,n);
                 print_process_table(p,n);
-                generate_chart();
+                generate_chart("FCFS");
                 reset_results(p,n);
                 break;
 
@@ -118,7 +148,7 @@ do
 
                 sjfnp(p,n);
                 print_process_table(p,n);
-                generate_chart();
+                generate_chart("SJF Non-Preemptive");
                 reset_results(p,n);
                 break;
 
@@ -129,23 +159,16 @@ do
 		reset_gantt_log();
                 srtf(p,n);
                 print_process_table(p,n);
-                generate_chart();
+                generate_chart("SJF Preemptive");
                 reset_results(p,n);
                 break;
 
             case 4:
 		int hm[1000]={0};
+	
 
     for(int i=0;i<n;i++){
-        int pr;
-        printf("Enter Priority for PID P%d: ",i+1);
-        scanf("%d",&pr);
-
-        while(hm[pr]==1){
-            printf("Priority already used! Enter again: ");
-            scanf("%d",&pr);
-        }
-
+        int pr=get_valid_priority(hm,i+1);       
         p[i].priority=pr;
         hm[pr]=1;
     }
@@ -158,27 +181,18 @@ do
 
                 priority_p(p,n);
                 print_process_table_priority(p,n);
-                generate_chart();
+                generate_chart("Priority Preemmptive");
                 reset_results(p,n);
                 break;
 
             case 5:
-               int hm2[1000]={0};
+               int hm2[1000]={0};        
 
     for(int i=0;i<n;i++){
-        int pr;
-        printf("Enter Priority for PID P%d: ",i+1);
-        scanf("%d",&pr);
-
-        while(hm2[pr]==1){
-            printf("Priority already used! Enter again: ");
-            scanf("%d",&pr);
-        }
-
+        int pr=get_valid_priority(hm2,i+1);       
         p[i].priority=pr;
         hm2[pr]=1;
     }
-
 
 		 print_border();
                 printf("Running Priority Scheduling (Non Preemptive)\n");
@@ -187,7 +201,7 @@ do
 
                 priority_np(p,n);
                 print_process_table_priority(p,n);
-                generate_chart();
+                generate_chart("Priority Non-Preemptive");
                 reset_results(p,n);
                 break;
 
@@ -196,18 +210,18 @@ do
                 printf("Round Robin Scheduling\n");
                 print_border();
 		do{
-    		printf("Enter Time Quantum (1 - 10): ");
+    		printf("Enter Time Quantum: ");
     		scanf("%f",&tq);
 
-    		if(tq < 1 || tq > 10)
-       		 printf("Invalid Time Quantum! Enter value between 1 and 10.\n");
+    		if(tq < 1){
+       		 printf("Invalid Time Quantum!Time quantum should at least be 1.\n");
 
-		} while(tq < 1 || tq > 10);
+		}} while(tq < 1);
 		reset_gantt_log();
 
                 rr(p,n,tq);
                 print_process_table(p,n);
-                generate_chart();
+                generate_chart("Round Robin");
                 reset_results(p,n);
                 break;
 
@@ -222,7 +236,7 @@ do
 
                 sjfnp(p,n);
                 print_process_table(p,n);
-                generate_chart();
+                generate_chart("SJF Non-Preemptive");
                 reset_results(p,n);
 
                 printf("\n--- SRTF ---\n");
@@ -230,15 +244,25 @@ do
 
                 srtf(p,n);
                 print_process_table(p,n);
-                generate_chart();
+                generate_chart("SJF Preemptive");
                 reset_results(p,n);
+		
+		printf("\n---Running priority based algorithms...--\n");
+		int hma[1000]={0};
+
+for(int i=0;i<n;i++){
+        int pr=get_valid_priority(hma,i+1);       
+        p[i].priority=pr;
+        hma[pr]=1;
+    }
+
 
                 printf("\n--- Priority Preemptive ---\n");
 		reset_gantt_log();
 
                 priority_p(p,n);
                 print_process_table_priority(p,n);
-                generate_chart();
+                generate_chart("Priority Preemptive");
                 reset_results(p,n);
 
                 printf("\n--- Priority Non Preemptive ---\n");
@@ -246,7 +270,7 @@ do
 
                 priority_np(p,n);
                 print_process_table_priority(p,n);
-                generate_chart();
+                generate_chart("Priority Non-Preemptive");
                 reset_results(p,n);
 
                 printf("\n--- FCFS ---\n");
@@ -254,7 +278,7 @@ do
 
                 fcfs(p,n);
                 print_process_table(p,n);
-                generate_chart();
+                generate_chart("FCFS");
                 reset_results(p,n);
 
                 printf("\n--- Round Robin ---\n");
@@ -264,7 +288,7 @@ do
 
                 rr(p,n,tq);
                 print_process_table(p,n);
-                generate_chart();
+                generate_chart("Round Robin");
                 reset_results(p,n);
 		 // Generate comparison graph automatically
     		system("python3 performance_plot.py");
