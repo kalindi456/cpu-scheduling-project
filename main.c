@@ -345,7 +345,7 @@ for(int i=0;i<n;i++){
    		 }
    		 run_all_algorithms_silent(p, n, tq);  // 👈 silent version
    		 select_best_algorithm();
-
+		 store_training_data(p, n); 
    		 run_best_algorithm(p, n, tq);  // 👈 THIS prints final output
 
    		 break;

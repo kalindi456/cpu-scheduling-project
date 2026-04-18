@@ -26,7 +26,7 @@ all: $(TARGET)
 
 # Compile the program
 $(TARGET): $(SRC)
-	$(CC) $(CFLAGS) $(SRC) -o $(TARGET)
+	$(CC) $(CFLAGS) $(SRC) -o $(TARGET) -lm
 
 # Clean object files and executable
 clean:
