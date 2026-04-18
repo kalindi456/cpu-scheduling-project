@@ -3,6 +3,7 @@
 #include "scheduler.h"
 #include "gantt.h"
 #include "csv.h"
+#include "ai_rule.h"
 #define MAX_PROCESS 100
 void print_border(){
     printf("\n====================================================\n");
@@ -20,6 +21,7 @@ void print_menu(){
     printf("5. Priority Scheduling (Non Preemptive)\n");
     printf("6. Round Robin\n");
     printf("7. Run All Algorithms\n");
+    printf("8. AI based selection\n");
     printf("0. Exit\n");
     print_border();
     printf("Enter your choice: ");
@@ -66,7 +68,38 @@ int negative_error(int time){
 int invalid_bt(int time){
 if (time<=0)
 {return -1;} else{return 0;}}
+void run_all_algorithms_silent(struct Process p[], int n, float tq)
+{
 
+    // SJF
+    reset_gantt_log();
+    sjfnp(p,n);
+    reset_results(p,n);
+
+    // SRTF
+    reset_gantt_log();
+    srtf(p,n);
+    reset_results(p,n);
+
+    //priority
+    reset_gantt_log();
+    priority_p(p,n);
+    reset_results(p,n);
+
+    reset_gantt_log();
+    priority_np(p,n);
+    reset_results(p,n);
+
+    // FCFS
+    reset_gantt_log();
+    fcfs(p,n);
+    reset_results(p,n);
+
+    // RR
+    reset_gantt_log();
+    rr(p,n,tq);
+    reset_results(p,n);
+}
 int main(){
     int n,choice;
     float tq;
@@ -293,8 +326,30 @@ for(int i=0;i<n;i++){
 		 // Generate comparison graph automatically
     		system("python3 performance_plot.py");
                 break;
+		case 8:
+   		 printf("\n===== AI BASED SELECTION =====\n");
 
-            default:
+   		 reset_performance_log();
+   		 reset_gantt_log();
+
+   		 float tq;
+   		 printf("Enter Time Quantum: ");
+   		 scanf("%f", &tq);
+		
+   		 // ✅ TAKE PRIORITY INPUT ONCE
+    		 int hm_ai[1000] = {0};   // now safe (new scope)
+		for(int i = 0; i < n; i++) {
+        	int pr = get_valid_priority(hm_ai, i+1);
+        	p[i].priority = pr;
+        	hm_ai[pr] = 1;
+   		 }
+   		 run_all_algorithms_silent(p, n, tq);  // 👈 silent version
+   		 select_best_algorithm();
+
+   		 run_best_algorithm(p, n, tq);  // 👈 THIS prints final output
+
+   		 break;
+           default:
                 printf("\nInvalid Choice! Try again.\n");
         }
     }

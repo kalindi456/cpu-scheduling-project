@@ -71,7 +71,7 @@ float avg_tat = total_tat / n;
 
 printf("\nAverage Waiting Time = %.2f", avg_wt);
 printf("\nAverage Turnaround Time = %.2f", avg_tat);
-
-save_performance("SJF-NP", avg_wt, avg_tat);
+int cs = calculate_context_switch();
+save_performance("SJF-NP", avg_wt, avg_tat, cs);
 
 }

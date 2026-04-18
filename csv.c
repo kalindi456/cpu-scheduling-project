@@ -3,7 +3,7 @@
 
 
 
-void save_performance(char algo[], float avg_wt, float avg_tat)
+void save_performance(char algo[], float avg_wt, float avg_tat,int cs)
 {
     FILE *fp;
 
@@ -15,7 +15,7 @@ void save_performance(char algo[], float avg_wt, float avg_tat)
         return;
     }
 
-    fprintf(fp, "%s,%.2f,%.2f\n", algo, avg_wt, avg_tat);
+    fprintf(fp, "%s,%.2f,%.2f,%d\n", algo, avg_wt, avg_tat, cs);
 
     fclose(fp);
 }
@@ -28,6 +28,6 @@ void reset_performance_log()
         return;
     }
 
-    fprintf(fp,"algorithm,avg_wt,avg_tat\n");
+    fprintf(fp,"algorithm,avg_wt,avg_tat,context_switch\n");
     fclose(fp);
 }

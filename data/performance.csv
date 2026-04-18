@@ -1,8 +1,7 @@
-algorithm,avg_wt,avg_tat
-SJF-NP,2.00,9.50
-SRTF,2.00,9.50
-Priority-P,5.75,13.25
-Priority_NP,5.75,13.25
-FCFS,2.00,9.50
-RR,3.75,11.25
-RR,3.50,11.00
+algorithm,avg_wt,avg_tat,context_switch
+SJF-NP,3.67,11.00,3
+SRTF,3.67,11.00,3
+Priority-P,4.33,11.67,3
+Priority_NP,4.33,11.67,3
+FCFS,4.33,11.67,3
+RR,4.33,11.67,3

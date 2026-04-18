@@ -11,6 +11,7 @@ algorithms = df['algorithm'].tolist()
 # Avg WT and Avg TAT
 avg_wt = df['avg_wt'].tolist()
 avg_tat = df['avg_tat'].tolist()
+cs = df['context_switch'].tolist()
 
 # Set up positions for bars
 x = np.arange(len(algorithms))

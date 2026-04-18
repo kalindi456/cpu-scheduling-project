@@ -15,6 +15,7 @@ SRC = main.c \
       csv.c \
       reset_results.c \
       print_table.c \
+      ai_rule.c \
       gantt.c
 
 # Output executable

@@ -70,8 +70,8 @@ if(idle_start != -1)
 
 float avg_tat = total_tat / n;
 float avg_wt = total_wt / n;
-
-save_performance("Priority_NP", avg_wt, avg_tat);
+int cs = calculate_context_switch();
+save_performance("Priority_NP", avg_wt, avg_tat, cs);
 
 printf("\nPriority Non-Preemptive Completed: Avg WT = %.2f, Avg TAT = %.2f\n", avg_wt, avg_tat);
 

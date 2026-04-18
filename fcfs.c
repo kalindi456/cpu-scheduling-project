@@ -46,8 +46,8 @@ for(int i = 0; i < n; i++)
 
 float avg_wt = total_wt / n;
 float avg_tat = total_tat / n;
-
-save_performance("FCFS", avg_wt, avg_tat);
+int cs = calculate_context_switch();
+save_performance("FCFS", avg_wt, avg_tat, cs);
 
 printf("\nFCFS Completed: Avg WT = %.2f, Avg TAT = %.2f\n", avg_wt, avg_tat);
 
