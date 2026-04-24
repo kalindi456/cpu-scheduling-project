@@ -5,7 +5,7 @@
 #include "gantt.h"
 #include "csv.h"
 
-void priority_p(struct Process p[], int n)
+void priority_p(struct Process p[], int n,int s)
 {
 float time = 0;
 int completed = 0;
@@ -90,9 +90,9 @@ while(completed < n)
 
 float avg_wt = total_wt / n;
 float avg_tat = total_tat / n;
-
+if(s==0){
 printf("\nAverage Waiting Time = %.2f", avg_wt);
-printf("\nAverage Turnaround Time = %.2f", avg_tat);
+printf("\nAverage Turnaround Time = %.2f", avg_tat);}
 int cs = calculate_context_switch();
 save_performance("Priority-P", avg_wt, avg_tat, cs);
 

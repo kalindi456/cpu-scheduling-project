@@ -3,7 +3,7 @@
 #include "gantt.h"
 #include "csv.h"
 
-void priority_np(struct Process p[], int n)
+void priority_np(struct Process p[], int n,int s)
 {
 int completed = 0;
 float time = 0;
@@ -72,8 +72,8 @@ float avg_tat = total_tat / n;
 float avg_wt = total_wt / n;
 int cs = calculate_context_switch();
 save_performance("Priority_NP", avg_wt, avg_tat, cs);
-
+if(s==0){
 printf("\nPriority Non-Preemptive Completed: Avg WT = %.2f, Avg TAT = %.2f\n", avg_wt, avg_tat);
-
+}
 
 }

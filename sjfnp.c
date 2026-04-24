@@ -3,7 +3,7 @@
 #include "gantt.h"
 #include "csv.h"
 
-void sjfnp(struct Process p[], int n)
+void sjfnp(struct Process p[], int n,int s)
 {
 int completed = 0;
 float current_time = 0;
@@ -68,9 +68,9 @@ while(completed < n)
 
 float avg_wt = total_wt / n;
 float avg_tat = total_tat / n;
-
+if(s==0){
 printf("\nAverage Waiting Time = %.2f", avg_wt);
-printf("\nAverage Turnaround Time = %.2f", avg_tat);
+printf("\nAverage Turnaround Time = %.2f", avg_tat);}
 int cs = calculate_context_switch();
 save_performance("SJF-NP", avg_wt, avg_tat, cs);
 

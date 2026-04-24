@@ -3,7 +3,7 @@
 #include "gantt.h"
 #include "csv.h"
 
-void fcfs(struct Process p[], int n)
+void fcfs(struct Process p[], int n,int s)
 {
 float time = 0;
 float total_wt = 0, total_tat = 0;
@@ -49,7 +49,9 @@ float avg_tat = total_tat / n;
 int cs = calculate_context_switch();
 save_performance("FCFS", avg_wt, avg_tat, cs);
 
-printf("\nFCFS Completed: Avg WT = %.2f, Avg TAT = %.2f\n", avg_wt, avg_tat);
+if(s==0){
+printf("\nFCFS Completed: Avg WT = %.2f, Avg TAT = %.2f\n", avg_wt, avg_tat);}
+
 
 
 }

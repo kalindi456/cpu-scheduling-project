@@ -136,32 +136,32 @@ void run_best_algorithm(struct Process p[], int n, float tq)
     reset_gantt_log();
 
     if (strcmp(algo, "FCFS") == 0) {
-        fcfs(p, n);
+        fcfs(p, n,0);
         print_process_table(p, n);
         generate_chart("FCFS");
     }
     else if (strcmp(algo, "SJF-NP") == 0) {
-        sjfnp(p, n);
+        sjfnp(p, n,0);
         print_process_table(p, n);
         generate_chart("SJF Non-Preemptive");
     }
     else if (strcmp(algo, "SRTF") == 0) {
-        srtf(p, n);
+        srtf(p, n,0);
         print_process_table(p, n);
         generate_chart("SJF Preemptive");
     }
     else if (strcmp(algo, "RR") == 0) {
-        rr(p, n, tq);
+        rr(p, n, tq,0);
         print_process_table(p, n);
         generate_chart("Round Robin");
     }
     else if (strcmp(algo, "Priority_NP") == 0) {
-        priority_np(p, n);
+        priority_np(p, n,0);
         print_process_table_priority(p, n);
         generate_chart("Priority Non-Preemptive");
     }
     else if (strcmp(algo, "Priority_P") == 0) {
-        priority_p(p, n);
+        priority_p(p, n,0);
         print_process_table_priority(p, n);
         generate_chart("Priority Preemptive");
     }

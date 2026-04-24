@@ -3,7 +3,7 @@
 #include "gantt.h"
 #include "csv.h"
 
-void rr(struct Process p[], int n, float  tq)
+void rr(struct Process p[], int n, float  tq,int s)
 {
 float time = 0;
 int completed = 0;
@@ -77,9 +77,9 @@ for(int i = 0; i < n; i++)
 
 float avg_wt = total_wt / n;
 float avg_tat = total_tat / n;
-
+if(s==0){
 printf("\nAverage Waiting Time = %.2f", avg_wt);
-printf("\nAverage Turnaround Time = %.2f", avg_tat);
+printf("\nAverage Turnaround Time = %.2f", avg_tat);}
 int cs = calculate_context_switch();
 save_performance("RR", avg_wt, avg_tat, cs);
 

@@ -73,31 +73,31 @@ void run_all_algorithms_silent(struct Process p[], int n, float tq)
 
     // SJF
     reset_gantt_log();
-    sjfnp(p,n);
+    sjfnp(p,n,1);
     reset_results(p,n);
 
     // SRTF
     reset_gantt_log();
-    srtf(p,n);
+    srtf(p,n,1);
     reset_results(p,n);
 
     //priority
     reset_gantt_log();
-    priority_p(p,n);
+    priority_p(p,n,1);
     reset_results(p,n);
 
     reset_gantt_log();
-    priority_np(p,n);
+    priority_np(p,n,1);
     reset_results(p,n);
 
     // FCFS
     reset_gantt_log();
-    fcfs(p,n);
+    fcfs(p,n,1);
     reset_results(p,n);
 
     // RR
     reset_gantt_log();
-    rr(p,n,tq);
+    rr(p,n,tq,1);
     reset_results(p,n);
 }
 int main(){
@@ -167,7 +167,7 @@ do
                 printf("Running FCFS Scheduling\n");
                 print_border();
 		reset_gantt_log();
-                fcfs(p,n);
+                fcfs(p,n,0);
                 print_process_table(p,n);
                 generate_chart("FCFS");
                 reset_results(p,n);
@@ -179,7 +179,7 @@ do
                 print_border();
 		reset_gantt_log();
 
-                sjfnp(p,n);
+                sjfnp(p,n,0);
                 print_process_table(p,n);
                 generate_chart("SJF Non-Preemptive");
                 reset_results(p,n);
@@ -190,7 +190,7 @@ do
                 printf("Running Shortest Remaining Time First (SRTF)\n");
                 print_border();
 		reset_gantt_log();
-                srtf(p,n);
+                srtf(p,n,0);
                 print_process_table(p,n);
                 generate_chart("SJF Preemptive");
                 reset_results(p,n);
@@ -212,7 +212,7 @@ do
                 print_border();
 		reset_gantt_log();
 
-                priority_p(p,n);
+                priority_p(p,n,0);
                 print_process_table_priority(p,n);
                 generate_chart("Priority Preemmptive");
                 reset_results(p,n);
@@ -232,7 +232,7 @@ do
                 print_border();
 		reset_gantt_log();
 
-                priority_np(p,n);
+                priority_np(p,n,0);
                 print_process_table_priority(p,n);
                 generate_chart("Priority Non-Preemptive");
                 reset_results(p,n);
@@ -252,7 +252,7 @@ do
 		}} while(tq < 1);
 		reset_gantt_log();
 
-                rr(p,n,tq);
+                rr(p,n,tq,0);
                 print_process_table(p,n);
                 generate_chart("Round Robin");
                 reset_results(p,n);
@@ -267,7 +267,7 @@ do
                 printf("\n--- SJF ---\n");
 		reset_gantt_log();
 
-                sjfnp(p,n);
+                sjfnp(p,n,0);
                 print_process_table(p,n);
                 generate_chart("SJF Non-Preemptive");
                 reset_results(p,n);
@@ -275,7 +275,7 @@ do
                 printf("\n--- SRTF ---\n");
 		reset_gantt_log();
 
-                srtf(p,n);
+                srtf(p,n,0);
                 print_process_table(p,n);
                 generate_chart("SJF Preemptive");
                 reset_results(p,n);
@@ -293,7 +293,7 @@ for(int i=0;i<n;i++){
                 printf("\n--- Priority Preemptive ---\n");
 		reset_gantt_log();
 
-                priority_p(p,n);
+                priority_p(p,n,0);
                 print_process_table_priority(p,n);
                 generate_chart("Priority Preemptive");
                 reset_results(p,n);
@@ -301,7 +301,7 @@ for(int i=0;i<n;i++){
                 printf("\n--- Priority Non Preemptive ---\n");
 		reset_gantt_log();
 
-                priority_np(p,n);
+                priority_np(p,n,0);
                 print_process_table_priority(p,n);
                 generate_chart("Priority Non-Preemptive");
                 reset_results(p,n);
@@ -309,7 +309,7 @@ for(int i=0;i<n;i++){
                 printf("\n--- FCFS ---\n");
 		reset_gantt_log();
 
-                fcfs(p,n);
+                fcfs(p,n,0);
                 print_process_table(p,n);
                 generate_chart("FCFS");
                 reset_results(p,n);
@@ -319,7 +319,7 @@ for(int i=0;i<n;i++){
                 scanf("%f",&tq);
 		reset_gantt_log();
 
-                rr(p,n,tq);
+                rr(p,n,tq,0);
                 print_process_table(p,n);
                 generate_chart("Round Robin");
                 reset_results(p,n);
@@ -345,7 +345,13 @@ for(int i=0;i<n;i++){
    		 }
    		 run_all_algorithms_silent(p, n, tq);  // 👈 silent version
    		 select_best_algorithm();
-		 store_training_data(p, n); 
+		 store_training_data(p, n);
+		FILE *fp=fopen("data/ai_choice.txt","r");
+		char best_algo[50];
+		if(fp==NULL){printf("Error in opening file ai_choice\n");break;}
+		fscanf(fp,"%s",best_algo);
+		fclose(fp);
+		printf("Selected Algorithm: %s\n",best_algo); 
    		 run_best_algorithm(p, n, tq);  // 👈 THIS prints final output
 
    		 break;
