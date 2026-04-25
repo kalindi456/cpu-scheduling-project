@@ -346,6 +346,8 @@ for(int i=0;i<n;i++){
    		 run_all_algorithms_silent(p, n, tq);  // 👈 silent version
    		 select_best_algorithm();
 		 store_training_data(p, n);
+	       //	generate_process_input(p,n);
+	       //      system("python3 ai_selector.py");
 		FILE *fp=fopen("data/ai_choice.txt","r");
 		char best_algo[50];
 		if(fp==NULL){printf("Error in opening file ai_choice\n");break;}
