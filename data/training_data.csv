@@ -5,3 +5,6 @@ n_process,avg_bt,std_bt,best_algorithm
 3,4.33,1.25,FCFS
 4,7.25,7.40,SRTF
 3,2.33,0.47,FCFS
+3,5.33,4.03,FCFS
+3,2.33,0.47,Priority_NP
+4,7.00,2.35,SJF-NP

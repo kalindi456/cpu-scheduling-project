@@ -172,3 +172,37 @@ void run_best_algorithm(struct Process p[], int n, float tq)
 
     reset_results(p, n);
 }
+
+void run_all_algorithms_silent(struct Process p[], int n, float tq)
+{
+
+    // SJF
+    reset_gantt_log();
+    sjfnp(p,n,1);
+    reset_results(p,n);
+
+    // SRTF
+    reset_gantt_log();
+    srtf(p,n,1);
+    reset_results(p,n);
+
+    //priority
+    reset_gantt_log();
+    priority_p(p,n,1);
+    reset_results(p,n);
+
+    reset_gantt_log();
+    priority_np(p,n,1);
+    reset_results(p,n);
+
+    // FCFS
+    reset_gantt_log();
+    fcfs(p,n,1);
+    reset_results(p,n);
+
+    // RR
+    reset_gantt_log();
+    rr(p,n,tq,1);
+    reset_results(p,n);
+}
+
