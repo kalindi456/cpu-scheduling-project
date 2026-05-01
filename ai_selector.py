@@ -31,17 +31,20 @@ exit(1)
 
 df = pd.read_csv(INPUT_FILE)
 return df.iloc[0] # take first row
-
 def predict(model, input_row):
-X_test = [[
-input_row["n_process"],
-input_row["avg_bt"],
-input_row["std_bt"]
-]]
+    X_test = [[
+        input_row["n_process"],
+        input_row["avg_bt"],
+        input_row["std_bt"]
+    ]]
 
-prediction = model.predict(X_test)
-return prediction[0]
+    prediction = model.predict(X_test)[0]
 
+    # 🔥 ADD THIS (confidence)
+    probs = model.predict_proba(X_test)[0]
+    confidence = max(probs)
+
+    return prediction, confidence
 def save_output(algo):
 with open(OUTPUT_FILE, "w") as f:
 f.write(algo)
@@ -50,9 +53,13 @@ def main():
 df = load_training_data()
 model = train_model(df)
 input_row = load_input()
-best_algo = predict(model, input_row)
-save_output(best_algo)
+prediction, confidence = predict(model, input_row)
 
+# 🔥 Save BOTH
+save_output(f"{prediction} {confidence}")
+
+print(f"Prediction: {prediction}")
+print(f"Confidence: {confidence}")
 print(f"Predicted Best Algorithm: {best_algo}")
 
 if __name__ == "__main__":

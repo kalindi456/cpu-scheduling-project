@@ -327,39 +327,38 @@ int main(){
 }
             
 
-            case 8:
-            {
-                printf("\nAI MODE\n");
+case 8:
+{
+    printf("\nAI MODE\n");
 
-                int used[1000]={0};
+    int used[1000] = {0};
 
-                tq = get_valid_float("Enter Time Quantum: ");
+    tq = get_valid_float("Enter Time Quantum: ");
 
-                for(int i=0;i<n;i++){
-                    int pr = get_valid_priority(used,i+1);
-                    p[i].priority = pr;
-                    used[pr]=1;
-                }
+    for(int i = 0; i < n; i++){
+        int pr = get_valid_priority(used, i + 1);
+        p[i].priority = pr;
+        used[pr] = 1;
+    }
 
-                run_all_algorithms_silent(p,n,tq);
-                select_best_algorithm();
+    char best_algo[30];
 
-                FILE *fp = fopen("data/ai_choice.txt","r");
-                if(!fp){
-                    printf("AI file error!\n");
-                    break;
-                }
+    // Step 1: Run all algorithms
+    run_all_algorithms_silent(p, n, tq);
 
-                char best[50];
-                fscanf(fp,"%s",best);
-                fclose(fp);
+    // Step 2: Find TRUE best algorithm
+    select_best_algorithm(best_algo);
 
-                printf("Selected Algorithm: %s\n",best);
+    printf("Selected Algorithm (Training): %s\n", best_algo);
 
-                run_best_algorithm(p,n,tq);
-                break;
-            }
-            case 9:   /* 🔥 FIXED VERSION */
+    // Step 3: Store correct training data
+    store_training_data(p, n, best_algo);
+
+    // Step 4: Now run AI-based hybrid system
+    run_best_algorithm(p, n, tq);
+
+    break;
+}            case 9:   /* 🔥 FIXED VERSION */
             {
                 int new_n;
 
