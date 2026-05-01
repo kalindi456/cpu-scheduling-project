@@ -174,6 +174,9 @@ int main(){
             printf("\nExiting...\n");
             break;
         }
+        
+    // Step 3: Store correct training data
+     char best_choice[30];
 
         switch(choice){
 
@@ -183,6 +186,15 @@ int main(){
                 print_process_table(p,n);
                 generate_chart("FCFS");
                 reset_results(p,n);
+                run_all_algorithms_silent(p, n,0,0,0);
+               
+                printf("\n===============AI Suggestion====================\n");
+                select_best_algorithm(best_choice);
+                 store_training_data(p, n, best_choice);
+                printf("\nBased on the performance metrics, the best algorithm for this scenario is: %s\n", best_choice);
+              
+               
+
                 break;
 
             case 2:
@@ -191,14 +203,25 @@ int main(){
                 print_process_table(p,n);
                 generate_chart("SJF");
                 reset_results(p,n);
+                run_all_algorithms_silent(p, n,0,0,0);
+               
+                 printf("\n===============AI Suggestion====================\n");
+                select_best_algorithm(best_choice);
+                 store_training_data(p, n, best_choice);
+                printf("\nBased on the performance metrics, the best algorithm for this scenario is: %s\n", best_choice);
+              
                 break;
-
             case 3:
                 reset_gantt_log();
                 srtf(p,n,0);
                 print_process_table(p,n);
                 generate_chart("SRTF");
                 reset_results(p,n);
+                run_all_algorithms_silent(p, n,0,0,0);
+                 printf("\n===============AI Suggestion====================\n");
+                select_best_algorithm(best_choice);
+                 store_training_data(p, n, best_choice);
+                printf("\nBased on the performance metrics, the best algorithm for this scenario is: %s\n", best_choice);
                 break;
 
             case 4:
@@ -216,6 +239,11 @@ int main(){
                 print_process_table_priority(p,n);
                 generate_chart("Priority Preemptive");
                 reset_results(p,n);
+                run_all_algorithms_silent(p, n,0,1,0);
+                printf("\n===============AI Suggestion====================\n");
+                select_best_algorithm(best_choice);
+                 store_training_data(p, n, best_choice);
+                printf("\nBased on the performance metrics, the best algorithm for this scenario is: %s\n", best_choice);
                 break;
             }
 
@@ -234,6 +262,12 @@ int main(){
                 print_process_table_priority(p,n);
                 generate_chart("Priority Non-Preemptive");
                 reset_results(p,n);
+                run_all_algorithms_silent(p, n,0,1,0);
+                printf("\n===============AI Suggestion====================\n");
+                select_best_algorithm(best_choice);
+                 store_training_data(p, n, best_choice);
+                printf("\nBased on the performance metrics, the best algorithm for this scenario is: %s\n", best_choice);
+
                 break;
             }
 
@@ -248,6 +282,12 @@ int main(){
                 print_process_table(p,n);
                 generate_chart("Round Robin");
                 reset_results(p,n);
+                run_all_algorithms_silent(p, n,tq,0,1);
+                printf("\n===============AI Suggestion====================\n");
+                select_best_algorithm(best_choice);
+                 store_training_data(p, n, best_choice);
+                printf("\nBased on the performance metrics, the best algorithm for this scenario is: %s\n", best_choice);
+
                 break;
             case 7: {
     print_border();
@@ -329,22 +369,33 @@ int main(){
 
 case 8:
 {
-    printf("\nAI MODE\n");
+    printf("\n======AI MODE========\n");
+
+    int pa;
+    int tqa;
+
 
     int used[1000] = {0};
-
+    tqa=get_valid_integer("Do your processes require time quantum? (1 for Yes, 0 for No): ");
+    if(tqa==1){
     tq = get_valid_float("Enter Time Quantum: ");
+    }
+     if(tqa>1) printf("Invalid input! Assuming no time quantum requirement.\n");   
 
+    pa=get_valid_integer("Are your processes priority-based? (1 for Yes, 0 for No): ");
+   
+    if(pa==1){
     for(int i = 0; i < n; i++){
         int pr = get_valid_priority(used, i + 1);
         p[i].priority = pr;
         used[pr] = 1;
-    }
+    }}
+        if(pa>1) printf("Invalid input! Assuming no priority requirement.\n");
 
     char best_algo[30];
 
     // Step 1: Run all algorithms
-    run_all_algorithms_silent(p, n, tq);
+    run_all_algorithms_silent(p, n, tq,pa,tqa);
 
     // Step 2: Find TRUE best algorithm
     select_best_algorithm(best_algo);
@@ -355,7 +406,7 @@ case 8:
     store_training_data(p, n, best_algo);
 
     // Step 4: Now run AI-based hybrid system
-    run_best_algorithm(p, n, tq);
+    run_best_algorithm(p, n, tq,pa, tqa);
 
     break;
 }            case 9:   /* 🔥 FIXED VERSION */

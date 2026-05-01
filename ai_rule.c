@@ -102,7 +102,7 @@ void select_best_algorithm(char *best_algo)
 // ------------------------------
 // RUN BEST ALGORITHM (HYBRID)
 // ------------------------------
-void run_best_algorithm(struct Process p[], int n, float tq)
+void run_best_algorithm(struct Process p[], int n, float tq,int pa,int tqa)
 {
     FILE *fp = fopen("data/ai_choice.txt", "r");
 
@@ -123,7 +123,7 @@ void run_best_algorithm(struct Process p[], int n, float tq)
     if (confidence <= 0.7) {
         printf("⚠️ Low confidence → Running all algorithms to find best\n");
 
-        run_all_algorithms_silent(p, n, tq);
+        run_all_algorithms_silent(p, n, tq,pa,tqa);
 
         char best_algo[30];
         select_best_algorithm(best_algo);
@@ -180,7 +180,7 @@ void run_best_algorithm(struct Process p[], int n, float tq)
 // ------------------------------
 // RUN ALL (UNCHANGED)
 // ------------------------------
-void run_all_algorithms_silent(struct Process p[], int n, float tq)
+void run_all_algorithms_silent(struct Process p[], int n, float tq,int pa,int tqa)
 {
     reset_gantt_log();
     sjfnp(p,n,1);
@@ -189,7 +189,7 @@ void run_all_algorithms_silent(struct Process p[], int n, float tq)
     reset_gantt_log();
     srtf(p,n,1);
     reset_results(p,n);
-
+    if(pa==1){
     reset_gantt_log();
     priority_p(p,n,1);
     reset_results(p,n);
@@ -197,12 +197,15 @@ void run_all_algorithms_silent(struct Process p[], int n, float tq)
     reset_gantt_log();
     priority_np(p,n,1);
     reset_results(p,n);
-
+    }
+    
     reset_gantt_log();
     fcfs(p,n,1);
     reset_results(p,n);
 
+    if(tqa==1){
+
     reset_gantt_log();
     rr(p,n,tq,1);
-    reset_results(p,n);
+    reset_results(p,n);}
 }

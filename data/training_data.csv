@@ -1,2 +1,12 @@
+n_process,avg_bt,std_bt,best_algorithm
 6,17.17,25.46,SRTF
 2,6.00,1.00,FCFS
+4,4.25,1.92,FCFS
+4,5.25,2.95,SJF-NP
+4,5.25,2.95,SJF-NP
+6,6.00,3.42,FCFS
+6,6.00,3.42,FCFS
+6,7.00,3.42,FCFS
+4,7.00,3.81,FCFS
+4,7.00,3.81,FCFS
+4,7.00,3.81,FCFS
