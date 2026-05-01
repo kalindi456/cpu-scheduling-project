@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-
 #include "ai_rule.h"
 #include "gantt.h"
 
@@ -44,65 +43,58 @@ void store_training_data(struct Process p[], int n, char *best_algo)
 // ------------------------------
 // SELECT BEST ALGORITHM (UNCHANGED)
 // ------------------------------
+
+
 void select_best_algorithm(char *best_algo)
 {
     FILE *fp = fopen("data/performance.csv", "r");
-
-    if (fp == NULL) {
+    if (!fp) {
         printf("Error opening performance.csv\n");
+        strcpy(best_algo, "FCFS");  // safe fallback
         return;
     }
 
-    char algo[30];
-    float wt, tat, best_wt;
-    int cs, best_cs;
+    char algo[30], best_name[30] = "FCFS";
+    float wt, tat, best_score = 1e9;
+    int cs;
 
     // Skip header
     fscanf(fp, "%*[^\n]\n");
 
-    // Read first row
-    if (fscanf(fp, "%[^,],%f,%f,%d\n", best_algo, &best_wt, &tat, &best_cs) != 4) {
-        fclose(fp);
-        return;
-    }
-
-    // Compare remaining rows
     while (fscanf(fp, "%[^,],%f,%f,%d\n", algo, &wt, &tat, &cs) == 4)
     {
-        if (wt < best_wt)
+        float imbalance = fabs(tat - wt);
+
+        float score = (0.45 * wt) +
+                      (0.25 * tat) +
+                      (0.15 * cs) +
+                      (0.15 * imbalance);
+
+        if (score < best_score)
         {
-            best_wt = wt;
-            best_cs = cs;
-            strcpy(best_algo, algo);
-        }
-        else if (fabs(wt - best_wt) < 0.01)
-        {
-            if (cs < best_cs)
-            {
-                best_cs = cs;
-                strcpy(best_algo, algo);
-            }
-            else if (cs == best_cs)
-            {
-                if (strcmp(algo, "SJF-NP") == 0 ||
-                    strcmp(algo, "FCFS") == 0 ||
-                    strcmp(algo, "Priority_NP") == 0)
-                {
-                    strcpy(best_algo, algo);
-                }
-            }
+            best_score = score;
+            strcpy(best_name, algo);
         }
     }
 
-    printf("\n🔥 Best Algorithm: %s\n", best_algo);
-
     fclose(fp);
+
+    strcpy(best_algo, best_name);
+
+    printf("\n🔥 Best Algorithm (Rule-Based): %s (Score = %.2f)\n", best_algo, best_score);
+
+    // ✅ Write to ai_choice.txt with full confidence (rule-based)
+    FILE *fw = fopen("data/ai_choice.txt", "w");
+    if (fw != NULL) {
+        fprintf(fw, "%s %.2f\n", best_algo, 1.0);
+        fclose(fw);
+    }
 }
 
 // ------------------------------
 // RUN BEST ALGORITHM (HYBRID)
 // ------------------------------
-void run_best_algorithm(struct Process p[], int n, float tq,int pa,int tqa)
+void run_best_algorithm(struct Process p[], int n, float tq, int pa, int tqa)
 {
     FILE *fp = fopen("data/ai_choice.txt", "r");
 
@@ -112,18 +104,25 @@ void run_best_algorithm(struct Process p[], int n, float tq,int pa,int tqa)
     }
 
     char algo[30];
-    float confidence;
+    float confidence = 0;
 
     fscanf(fp, "%s %f", algo, &confidence);
     fclose(fp);
 
     printf("\nML Suggestion: %s (Confidence: %.2f)\n", algo, confidence);
 
-    // ---------------- HYBRID LOGIC ----------------
-    if (confidence <= 0.7) {
-        printf("⚠️ Low confidence → Running all algorithms to find best\n");
+    // 🔥 NORMALIZE NAMES (important)
+    if (strcmp(algo, "SJF") == 0) {
+        strcpy(algo, "SJF-NP");
+    }
+    if (strcmp(algo, "PRIORITY") == 0) {
+        strcpy(algo, "Priority_NP");  // adjust if needed
+    }
 
-        run_all_algorithms_silent(p, n, tq,pa,tqa);
+    // ---------------- HYBRID LOGIC ----------------
+    if (confidence < 0.7 || strlen(algo) == 0) {
+        printf("⚠️ Low confidence → Running rule-based fallback\n");
+        run_all_algorithms_silent(p, n, tq, pa, tqa);
 
         char best_algo[30];
         select_best_algorithm(best_algo);
@@ -140,32 +139,32 @@ void run_best_algorithm(struct Process p[], int n, float tq,int pa,int tqa)
     reset_gantt_log();
 
     if (strcmp(algo, "FCFS") == 0) {
-        fcfs(p, n,0);
+        fcfs(p, n, 0);
         print_process_table(p, n);
         generate_chart("FCFS");
     }
     else if (strcmp(algo, "SJF-NP") == 0) {
-        sjfnp(p, n,0);
+        sjfnp(p, n, 0);
         print_process_table(p, n);
         generate_chart("SJF Non-Preemptive");
     }
     else if (strcmp(algo, "SRTF") == 0) {
-        srtf(p, n,0);
+        srtf(p, n, 0);
         print_process_table(p, n);
-        generate_chart("SJF Preemptive");
+        generate_chart("SRTF");
     }
     else if (strcmp(algo, "RR") == 0) {
-        rr(p, n, tq,0);
+        rr(p, n, tq, 0);
         print_process_table(p, n);
         generate_chart("Round Robin");
     }
     else if (strcmp(algo, "Priority_NP") == 0) {
-        priority_np(p, n,0);
+        priority_np(p, n, 0);
         print_process_table_priority(p, n);
         generate_chart("Priority Non-Preemptive");
     }
     else if (strcmp(algo, "Priority_P") == 0) {
-        priority_p(p, n,0);
+        priority_p(p, n, 0);
         print_process_table_priority(p, n);
         generate_chart("Priority Preemptive");
     }
@@ -176,7 +175,6 @@ void run_best_algorithm(struct Process p[], int n, float tq,int pa,int tqa)
 
     reset_results(p, n);
 }
-
 // ------------------------------
 // RUN ALL (UNCHANGED)
 // ------------------------------

@@ -5,6 +5,7 @@
 #include "gantt.h"
 #include "csv.h"
 #include "ai_rule.h"
+#include<math.h>
 
 #define MAX_PROCESS 100
 
@@ -126,6 +127,31 @@ void input_processes(struct Process *p, int n){
 
         p[i].finished = 0;
     }
+}
+void generate_process_input(struct Process p[], int n)
+{
+    FILE *fp = fopen("data/process_input.csv", "w");
+
+    fprintf(fp, "n_process,avg_bt,std_bt\n");
+
+    float sum = 0;
+    for (int i = 0; i < n; i++) {
+        sum += p[i].bt;
+    }
+
+    float avg = sum / n;
+
+    float variance = 0;
+    for (int i = 0; i < n; i++) {
+        variance += (p[i].bt - avg) * (p[i].bt - avg);
+    }
+    variance /= n;
+
+    float std = sqrt(variance);
+
+    fprintf(fp, "%d,%.2f,%.2f\n", n, avg, std);
+
+    fclose(fp);
 }
 
 /* ---------------- MAIN ---------------- */
@@ -366,8 +392,55 @@ int main(){
     break;
 }
             
-
 case 8:
+{
+    printf("\n====== HYBRID AI MODE ======\n");
+
+    int pa, tqa;
+    int used[1000] = {0};
+
+    // -------- INPUT FLAGS --------
+    tqa = get_valid_integer("Do your processes require time quantum? (1 for Yes, 0 for No): ");
+    if(tqa == 1){
+        tq = get_valid_float("Enter Time Quantum: ");
+    }
+
+    pa = get_valid_integer("Are your processes priority-based? (1 for Yes, 0 for No): ");
+    if(pa == 1){
+        for(int i = 0; i < n; i++){
+            int pr = get_valid_priority(used, i + 1);
+            p[i].priority = pr;
+            used[pr] = 1;
+        }
+    }
+
+    // -------- STEP 1: Generate ML input --------
+    generate_process_input(p, n);
+
+    // -------- STEP 2: Call Python AI --------
+    system("python3 ai_selector.py");
+
+    // -------- STEP 3: Run Hybrid Decision --------
+    run_best_algorithm(p, n, tq, pa, tqa);
+
+    // -------- STEP 4: Store training data (ONLY ONCE) --------
+    // We store AFTER final decision to avoid duplicates
+    char final_algo[30];
+
+    FILE *fp = fopen("data/ai_choice.txt", "r");
+    if (fp != NULL) {
+        fscanf(fp, "%s", final_algo);  // only read algorithm name
+        fclose(fp);
+
+        store_training_data(p, n, final_algo);
+    } else {
+        printf("Error reading ai_choice.txt for training storage\n");
+    }
+
+    break;
+}
+
+/*case 8:
 {
     printf("\n======AI MODE========\n");
 
@@ -393,7 +466,7 @@ case 8:
         if(pa>1) printf("Invalid input! Assuming no priority requirement.\n");
 
     char best_algo[30];
-
+    generate_process_input(p, n);
     // Step 1: Run all algorithms
     run_all_algorithms_silent(p, n, tq,pa,tqa);
 
@@ -409,7 +482,7 @@ case 8:
     run_best_algorithm(p, n, tq,pa, tqa);
 
     break;
-}            case 9:   /* 🔥 FIXED VERSION */
+} */           case 9:   /* 🔥 FIXED VERSION */
             {
                 int new_n;
 
